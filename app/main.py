@@ -1,17 +1,27 @@
+# app/main.py
+
 from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
-from app import __version__
+from app.routes import auth, users
+from app.core.exceptions import register_exception_handlers
+from app.core.startup import register_startup_events
+from app import __version__, __author__
 
 app = FastAPI()
 
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+# Register exception handlers
+register_exception_handlers(app)
 
+# Register startup events
+register_startup_events(app)
+
+# Include routers
+app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
+app.include_router(users.router, prefix="/user", tags=["Users"])
 
 @app.get("/")
-def read_root():
-    return {"message": "Hello, World!", "version": __version__}
-
-
-@app.get("/favicon.ico")
-async def favicon():
-    return {"message": "No favicon available"}
+def root():
+    return {
+        "message": "Welcome to the Mock Trader API with Supabase",
+        "version": __version__,
+        "author": __author__,
+    }
