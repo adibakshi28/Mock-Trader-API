@@ -10,3 +10,8 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 @app.get("/")
 def read_root():
     return {"message": "Hello, World!", "version": __version__}
+
+
+@app.get("/favicon.ico")
+async def favicon():
+    return {"message": "No favicon available"}
