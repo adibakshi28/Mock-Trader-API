@@ -1,0 +1,50 @@
+Local Development
+
+API Root: http://127.0.0.1:8000
+Swagger UI: http://127.0.0.1:8000/docs
+
+Connect to virtual environment 
+> .\venv\Scripts\Activate
+
+Disconnect from virtual environment
+> deactivate
+
+Run the app
+> uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+
+
+Run from .bat file -> Activate venv and start server :8000
+.\run.bat
+
+
+Stop Server
+CTRL + C
+
+
+Create a virtual environment
+> python -m venv venv
+
+
+Connect to Virtual environment
+> venv\Scripts\activate
+
+
+If cant connect to virtual environment
+> Get-ExecutionPolicy -List                                 // check your current execution policy
+> Set-ExecutionPolicy RemoteSigned -Scope CurrentUser       // temporarily bypass the restriction for the current session
+
+
+In virtual environment
+> pip list          // Lists all the libraries installed in venv (can also run > pip freeze   which will output libraries compatable with requirement.txt file)
+
+
+To save all the libraries installed in venv in requirement.txt
+> pip freeze > requirements.txt
+
+
+Installing all the project libraries (in venv)
+> pip install -r requirements.txt
+ 
+
+
+
