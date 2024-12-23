@@ -1,4 +1,5 @@
 import os
+import sys
 import requests
 from fastapi import FastAPI
 from app.models.database import check_connection
@@ -96,7 +97,7 @@ def validate_db_connection():
         print("✅ Connected to Supabase DB.")
     else:
         raise ConnectionError("❌ Could NOT connect to Supabase DB. Check your SUPABASE_URL / SERVICE_KEY.")
-
+     
 
 def register_startup_events(app: FastAPI):
     """
@@ -106,13 +107,12 @@ def register_startup_events(app: FastAPI):
     @app.on_event("startup")
     def startup_checks():
         print("🚀 Running Startup Checks...")
-
-        validate_env_variables()
-
-        validate_configuration(config=config)
-
-        check_third_party_services(config=config)
-
-        validate_db_connection()
-
-        print("🚀 All Startup Checks Passed Successfully!")
+        try:
+            validate_env_variables()
+            validate_configuration(config=config)
+            check_third_party_services(config=config)
+            validate_db_connection()
+            print("🚀 All Startup Checks Passed Successfully!")
+        except Exception as e:
+            print(f"❌ Startup Check Failed: {e}")
+            os._exit(1)
