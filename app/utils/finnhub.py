@@ -17,9 +17,6 @@ async def make_request(endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
     url = f"{FINNHUB_BASE_URL}{endpoint}"
     params["token"] = FINNHUB_API_KEY
 
-
-    print(f"Making request to {url} with params: {params}")
-
     try:
         async with httpx.AsyncClient(timeout=10) as client:
             response = await client.get(url, params=params)

@@ -13,8 +13,6 @@ def validate_env_variables():
     """
     required_env_vars = [
         "SECRET_KEY",
-        "PASSWORD_ENCRYPTION_ALGORITHM",
-        "ACCESS_TOKEN_EXPIRE_MINUTES",
         "FINNHUB_API_KEY",
         "SUPABASE_URL",
         "SUPABASE_SERVICE_KEY",
@@ -35,6 +33,10 @@ def validate_configuration(config: dict):
     required_config_vars = [
         "FINNHUB_API_BASE_URL",
         "FINNHUB_WEBSOCKET_URL",
+        "PASSWORD_ENCRYPTION_ALGORITHM",
+        "ACCESS_TOKEN_EXPIRE_MINUTES",
+        "EXCHANGE",
+        "TIMEZONE",
     ]
 
     missing_vars = [
