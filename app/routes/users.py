@@ -11,8 +11,7 @@ router = APIRouter()
 @router.get("/all")
 def list_all_users(payload: dict = Depends(require_active_session)) -> List[Dict]:
     """
-    Protected route requiring an active session.
-    If the user doesn't have an active session in the DB, they get 401.
+    Returns all registered users
     """
     users = get_all_users()
     return users

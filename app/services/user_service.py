@@ -11,7 +11,7 @@ def get_all_users() -> List[Dict]:
     Return all rows from the 'Users' table.
     """
     try:
-        response = supabase.table("Users").select("*").execute()
+        response = supabase.table("Users").select("id", "first_name", "last_name", "username", "email").eq("is_active", True).execute()
         return response.data or []
     except APIError as e:
         raise e
