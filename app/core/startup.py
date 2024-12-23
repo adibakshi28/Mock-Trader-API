@@ -2,6 +2,7 @@ import os
 import sys
 import requests
 from fastapi import FastAPI
+from app.jobs.scheduler import start_scheduler
 from app.models.database import check_connection
 from app.core.config import config
 
@@ -105,7 +106,8 @@ def register_startup_events(app: FastAPI):
     """
 
     @app.on_event("startup")
-    def startup_checks():
+    def startup_events():
+
         print("🚀 Running Startup Checks...")
         try:
             validate_env_variables()
@@ -113,6 +115,18 @@ def register_startup_events(app: FastAPI):
             check_third_party_services(config=config)
             validate_db_connection()
             print("🚀 All Startup Checks Passed Successfully!")
+        except EnvironmentError as env_err:
+            print(f"❌ Environment Validation Failed: {env_err}")
+            os._exit(1)
+        except ConnectionError as conn_err:
+            print(f"❌ Connection Validation Failed: {conn_err}")
+            os._exit(1)
         except Exception as e:
             print(f"❌ Startup Check Failed: {e}")
             os._exit(1)
+
+        try:
+            start_scheduler()
+            print("✅ Scheduled jobs setup complete.")
+        except Exception as e:
+            print(f"❌ Failed to setup scheduled jobs: {e}")
