@@ -15,7 +15,6 @@ def register(first_name: str, last_name: str, email: str, username: str, passwor
     """
     user = register_user(first_name, last_name, email, username, password)
     if not user:
-        # Could be some unknown scenario
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Unable to register user."

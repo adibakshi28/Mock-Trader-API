@@ -7,5 +7,7 @@ FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
 
 config = {
     "FINNHUB_API_BASE_URL": "https://finnhub.io/api/v1/",
-    "FINNHUB_WEBSOCKET_URL": "wss://ws.finnhub.io"
+    "FINNHUB_WEBSOCKET_URL": "wss://ws.finnhub.io",
+    "PASSWORD_ENCRYPTION_ALGORITHM":"HS256",
+    "ACCESS_TOKEN_EXPIRE_MINUTES":90,
 }
