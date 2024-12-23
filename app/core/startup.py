@@ -23,7 +23,7 @@ def validate_env_variables():
     missing_vars = [var for var in required_env_vars if not os.getenv(var)]
 
     if missing_vars:
-        raise EnvironmentError(f"❌ Missing environment variables: {', '.join(missing_vars)}")
+        raise EnvironmentError(f"Missing environment variables: {', '.join(missing_vars)}")
     print("✅ All required environment variables are set.")
 
 
@@ -43,7 +43,7 @@ def validate_configuration(config: dict):
     ]
 
     if missing_vars:
-        raise EnvironmentError(f"❌ Missing or empty configuration values: {', '.join(missing_vars)}")
+        raise EnvironmentError(f"Missing or empty configuration values: {', '.join(missing_vars)}")
     
     print("✅ All required configurations are set and valid.")
 
@@ -55,11 +55,11 @@ def check_third_party_services(config: dict):
     """
     finnhub_api_key = os.getenv("FINNHUB_API_KEY")
     if not finnhub_api_key:
-        raise ValueError("❌ FINNHUB_API_KEY is missing in environment variables.")
+        raise ValueError("FINNHUB_API_KEY is missing in environment variables.")
     
     finnhub_base_url = config.get("FINNHUB_API_BASE_URL")
     if not finnhub_base_url:
-        raise ValueError("❌ FINNHUB_API_BASE_URL is missing in config.")
+        raise ValueError("FINNHUB_API_BASE_URL is missing in config.")
     
     try:
         response = requests.get(
@@ -73,17 +73,17 @@ def check_third_party_services(config: dict):
             print("⚠️ Failed to parse JSON from Finnhub API response.")
         
         if response.status_code != 200:
-            raise ConnectionError(f"❌ API returned status code {response.status_code}: {response.text}")
+            raise ConnectionError(f"API returned status code {response.status_code}: {response.text}")
         print("✅ Finnhub API is reachable.")
     
     except requests.Timeout:
-        raise ConnectionError("❌ Finnhub API connection timed out.")
+        raise ConnectionError("Finnhub API connection timed out.")
     
     except requests.ConnectionError as e:
-        raise ConnectionError(f"❌ Error connecting to Finnhub API: {e}")
+        raise ConnectionError(f"Error connecting to Finnhub API: {e}")
     
     except Exception as e:
-        raise Exception(f"❌ Unexpected error: {e}")
+        raise Exception(f"Unexpected error: {e}")
 
     
     # TODO -> Check for finnhub websocket connection
@@ -97,7 +97,7 @@ def validate_db_connection():
     if check_connection():
         print("✅ Connected to Supabase DB.")
     else:
-        raise ConnectionError("❌ Could NOT connect to Supabase DB. Check your SUPABASE_URL / SERVICE_KEY.")
+        raise ConnectionError("Could NOT connect to Supabase DB. Check your SUPABASE_URL / SERVICE_KEY.")
      
 
 def register_startup_events(app: FastAPI):
@@ -115,12 +115,6 @@ def register_startup_events(app: FastAPI):
             check_third_party_services(config=config)
             validate_db_connection()
             print("🚀 All Startup Checks Passed Successfully!")
-        except EnvironmentError as env_err:
-            print(f"❌ Environment Validation Failed: {env_err}")
-            os._exit(1)
-        except ConnectionError as conn_err:
-            print(f"❌ Connection Validation Failed: {conn_err}")
-            os._exit(1)
         except Exception as e:
             print(f"❌ Startup Check Failed: {e}")
             os._exit(1)
